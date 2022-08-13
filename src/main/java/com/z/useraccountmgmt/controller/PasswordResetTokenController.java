@@ -74,12 +74,11 @@ public class PasswordResetTokenController {
                 passwordResetToken.setUser(u);
                 passwordResetTokenService.storeToken(passwordResetToken);
 
-                String link = appConfiguration.getClientUrl() + "/reset-password?token=" + token;
+                String link = appConfiguration.getClientUrl() + "/resetpassword?token=" + token;
                 emailService.sendASimpleMail(email, "Password Reset",
                 "Dear " + "<b>"+ email +"</b>" +", <br />" + "To reset your password click the link below,"
                         + "<br /> " + link
                         + "<br /> " +"Thank you.");
-            System.out.println("Email was sent successfully!");
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -11,4 +11,5 @@ import lombok.Data;
 public class AppConfiguration {
     private String clientUrl;
     private String senderEmail;
+    private String uploadDir;
 }

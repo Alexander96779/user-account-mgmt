@@ -10,12 +10,14 @@ import com.z.useraccountmgmt.configuration.SecurityConfiguration;
 import com.z.useraccountmgmt.exceptions.ResourceAlreadyExistsException;
 import com.z.useraccountmgmt.exceptions.ResourceNotFoundException;
 import com.z.useraccountmgmt.model.MyUserDetails;
+import com.z.useraccountmgmt.model.Profile;
 import com.z.useraccountmgmt.model.User;
 import com.z.useraccountmgmt.model.dto.UserDto;
 import com.z.useraccountmgmt.model.mapper.Mapper;
 import com.z.useraccountmgmt.model.request.UserRequest;
 import com.z.useraccountmgmt.model.response.AuthResponse;
 import com.z.useraccountmgmt.model.response.UserResponse;
+import com.z.useraccountmgmt.repository.ProfileRepository;
 import com.z.useraccountmgmt.repository.UserRepository;
 import com.z.useraccountmgmt.service.AuthService;
 
@@ -30,6 +32,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Autowired
     Mapper<User, UserDto, UserRequest, UserResponse> userMapper;
+
+    @Autowired
+    ProfileRepository profileRepository;
     
     @Override
     public UserDto signUpUser(UserDto userDto) {
@@ -38,6 +43,9 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(security.getPasswordEncoder().encode(userDto.getPassword()));
         User createdUser = userRepository.save(user);
         createdUser.setRoles("ROLE_USER");
+        Profile profile = new Profile();
+        Profile createdProfile = profileRepository.save(profile);
+        createdUser.setProfile(createdProfile);
         userRepository.save(createdUser);
 
         return userMapper.mapEntityToDto(userRepository.findById(createdUser.getId()).get());

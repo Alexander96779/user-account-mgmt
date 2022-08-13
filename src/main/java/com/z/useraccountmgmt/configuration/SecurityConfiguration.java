@@ -7,8 +7,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.z.useraccountmgmt.service.MyUserDetailsService;
 
@@ -16,6 +19,12 @@ import com.z.useraccountmgmt.service.MyUserDetailsService;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     MyUserDetailsService userDetailsService;
+
+    @Autowired
+    JWTRequestFilter jwtFilter;
+
+    @Autowired
+    CORSFilter corsFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -27,7 +36,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests().antMatchers("/api/v1").permitAll();
+        http.authorizeRequests().antMatchers("/api/v1/auth").permitAll()
+        .antMatchers("/api/v1/profile").authenticated().and().sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);;
+
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(corsFilter, ChannelProcessingFilter.class);
 
         http.csrf().disable();
 
