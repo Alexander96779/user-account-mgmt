@@ -32,7 +32,7 @@ public class JWTConfig {
     AuthService authService;
 
 
-    public String extractEmail(String token) throws JsonMappingException, JsonProcessingException {
+    public String extractUsername(String token) throws JsonMappingException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         String userToString = extractClaim(token, Claims::getSubject);
         String email;
@@ -75,7 +75,7 @@ public class JWTConfig {
 
     public Boolean validateToken(String token, UserDetails userDetails)
             throws JsonMappingException, JsonProcessingException {
-        final String username = extractEmail(token);
+        final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }

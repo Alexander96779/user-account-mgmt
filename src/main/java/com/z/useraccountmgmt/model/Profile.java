@@ -1,14 +1,14 @@
 package com.z.useraccountmgmt.model;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -19,25 +19,33 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.z.useraccountmgmt.model.response.UserResponse;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Data
-@Table(name="users")
-@NoArgsConstructor
-public class User {
+@Getter
+@Setter
+@Table(name = "profiles")
+public class Profile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true, length = 32)
-    private String email;
-    @Column(nullable = false)
-    private String password;
-    private String roles;
+    private String firstName;
+    private String lastName;
+    private Date dateOfBirth;
+    @Enumerated(EnumType.STRING)
+    private EGENDER gender;
+    private int age;
+    @Enumerated(EnumType.STRING)
+    private EMARITALSTATUS maritalStatus;
+    private String photoUrl;
+    private String nationality;
+    private String verification_status = "PENDING";
+
+    @OneToOne(mappedBy = "profile")
+    private User user;
     @CreationTimestamp
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -47,20 +55,16 @@ public class User {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime updateDateTime;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id")
-    private Profile profile; 
-
-    public UserResponse mapToUserResponse(){
-        return new UserResponse(id, email, roles);
+    public enum EGENDER {
+        FEMALE, MALE;
     }
 
-    public User(Long id, String email, String password, String roles) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
+    public enum EMARITALSTATUS {
+        SINGLE, MARRIED, DIVORCED, WIDOWED;
     }
 
+    public enum EVERIFICATIONSTATUS {
+        PENDING, VERIFIED, UNVERIFIED
+    }
 
 }
