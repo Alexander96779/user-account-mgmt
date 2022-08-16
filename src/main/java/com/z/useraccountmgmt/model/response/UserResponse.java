@@ -1,5 +1,7 @@
 package com.z.useraccountmgmt.model.response;
 
+import com.z.useraccountmgmt.model.Profile;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,12 +11,7 @@ public class UserResponse {
     private Long id;
     private String email;
     private String roles;
-
-    public UserResponse(Long id, String email, String roles) {
-        this.id = id;
-        this.email = email;
-        this.roles = roles;
-    }
+    private Profile profile;
 
 
 }

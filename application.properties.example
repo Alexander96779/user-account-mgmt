@@ -1,8 +1,8 @@
 # DATABASE CONFIGURATIONS
 # =========================
 
-spring.datasource.url=jdbc:mysql://localhost:3306/user_account_db
-spring.datasource.username=root
+spring.datasource.url=
+spring.datasource.username=
 spring.datasource.password=
 spring.datasource.initialization-mode=always
 spring.jpa.database=MYSQL
@@ -19,8 +19,8 @@ server.port=${PORT:8080}
 
 spring.mail.host=smtp.gmail.com
 spring.mail.port=587
-spring.mail.username=pniyigena85@gmail.com
-spring.mail.password=nrzfnuwlroyvhmyj
+spring.mail.username=
+spring.mail.password=
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
 
@@ -29,6 +29,6 @@ spring.main.allow-circular-references=true
 # APPLICATION CONFIGURATIONS
 # ===============================
 
-user-account-app.senderEmail=pniyigena85@gmail.com
+user-account-app.senderEmail=
 user-account-app.clientUrl = http://localhost:3000
 user-account-app.uploadDir=/uploads/users/documents

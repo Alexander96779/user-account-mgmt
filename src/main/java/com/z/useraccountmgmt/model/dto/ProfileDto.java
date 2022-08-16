@@ -2,6 +2,8 @@ package com.z.useraccountmgmt.model.dto;
 
 import java.util.Date;
 
+import com.z.useraccountmgmt.model.Verification;
+
 import lombok.Data;
 
 @Data
@@ -15,5 +17,5 @@ public class ProfileDto {
     private String maritalStatus;
     private String photoUrl;
     private String nationality;
-    private String verification_status;
+    private Verification verification;
 }

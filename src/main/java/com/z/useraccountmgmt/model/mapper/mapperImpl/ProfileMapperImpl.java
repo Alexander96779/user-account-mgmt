@@ -1,6 +1,7 @@
 package com.z.useraccountmgmt.model.mapper.mapperImpl;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.z.useraccountmgmt.model.Profile;
@@ -10,6 +11,7 @@ import com.z.useraccountmgmt.model.request.ProfileRequest;
 import com.z.useraccountmgmt.model.response.ProfileResponse;
 
 @Service
+@Qualifier("profileMapperImpl")
 public class ProfileMapperImpl implements Mapper<Profile, ProfileDto, ProfileRequest, ProfileResponse> {
     @Override
     public ProfileResponse mapDtoToResponse(ProfileDto d) {

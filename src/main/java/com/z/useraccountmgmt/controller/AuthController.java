@@ -93,7 +93,7 @@ public class AuthController {
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
         final String jwt = jwtTokenUtil.generateToken(userDetails);
-        final String message = "Users logged in successfully...";
+        final String message = "User logged in successfully...";
 
         ApiResponse<String> body = new ApiResponse<>(HttpStatus.OK, message, jwt);
 

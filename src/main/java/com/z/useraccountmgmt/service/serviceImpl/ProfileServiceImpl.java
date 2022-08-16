@@ -31,6 +31,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Autowired
     Mapper<Profile, ProfileDto, ProfileRequest, ProfileResponse> profileMapper;
 
+    @Override
     public ProfileDto addProfile(ProfileRequest profileRequest) {
         User user = authService.getAuth();
         Profile profile = profileRepository.findById(user.getProfile().getId()).orElseThrow(() -> new ResourceNotFoundException("No Profile found"));
