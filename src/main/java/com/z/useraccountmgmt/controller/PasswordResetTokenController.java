@@ -78,7 +78,7 @@ public class PasswordResetTokenController {
                 emailService.sendASimpleMail(email, "Password Reset",
                 "Dear " + "<b>"+ email +"</b>" +", <br />" + "To reset your password click the link below,"
                         + "<br /> " + link
-                        + "<br /> " +"Thank you.");
+                        + "<br /> " +"Thank you."+ "<br />" +"Regards, UAMS Team.");
             } catch (Exception e) {
                 e.printStackTrace();
             }

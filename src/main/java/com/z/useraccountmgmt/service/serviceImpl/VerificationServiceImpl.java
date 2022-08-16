@@ -15,6 +15,7 @@ import com.z.useraccountmgmt.model.response.VerificationResponse;
 import com.z.useraccountmgmt.repository.ProfileRepository;
 import com.z.useraccountmgmt.repository.VerificationRepository;
 import com.z.useraccountmgmt.service.AuthService;
+import com.z.useraccountmgmt.service.EmailService;
 import com.z.useraccountmgmt.service.UploadImageService;
 import com.z.useraccountmgmt.service.VerificationService;
 
@@ -35,6 +36,9 @@ public class VerificationServiceImpl implements VerificationService {
     @Autowired
     Mapper<Verification, VerificationDto, VerificationRequest, VerificationResponse> verificationMapper;
 
+    @Autowired
+    EmailService emailService;
+
     @Override
     public VerificationDto addVerification(VerificationRequest verificationRequest) {
         User user = authService.getAuth();
@@ -53,6 +57,27 @@ public class VerificationServiceImpl implements VerificationService {
         Verification verification = verificationRepository.findById(verificationId).orElseThrow(() -> new ResourceNotFoundException("Verification document not found"));
         verification.setStatus(EVERIFICATIONSTATUS.valueOf(verificationStatusRequest.getStatus().toUpperCase()));
         Verification createdVerification = verificationRepository.save(verification);
+        if (createdVerification.getStatus().equals(EVERIFICATIONSTATUS.VERIFIED)){
+            try {
+                String email = verification.getProfile().getUser().getEmail();
+                emailService.sendASimpleMail(email, "Account Verification",
+                "Dear " + "<b>"+ email +"</b>" +", <br />" + "Your user account profile is now recognizable by our administrators and is verified."
+                        + "<br /> " + "Congratulations, you can login to see the assigned badge."
+                        + "<br /> " +"Thank you." + "<br />" +"Regards, UAMS Team.");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                String email = verification.getProfile().getUser().getEmail();
+                emailService.sendASimpleMail(email, "Account Verification",
+                "Dear " + "<b>"+ email +"</b>" +", <br />" + "We regret to inform you that your user account profile is not recognizable by our administrators and can not be verified."
+                        + "<br /> " + "Please review your verification documents and submit it again for verification."
+                        + "<br /> " +"Thank you." +"<br />" + "Regards, UAMS Team.");
+            } catch (Exception e) {
+                e.printStackTrace();
+            } 
+        }
         return verificationMapper.mapEntityToDto(createdVerification);
     }
 }
