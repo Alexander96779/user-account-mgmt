@@ -52,4 +52,31 @@ public class UploadImageServiceImpl implements UploadImageService {
     }
 }
 
+    @Override
+    public String uploadDocument(String documentName, MultipartFile docFile) {
+        String ext = "." + FilenameUtils.getExtension(docFile.getOriginalFilename());
+
+        if(ext.equals(".pdf") || ext.equals(".jpeg") || ext.equals(".png") || ext.equals(".gif") || ext.equals(".jpg")){
+
+        String uploadDirectory = System.getProperty("user.dir") + appConfiguration.getUploadDir();
+        StringBuilder fileName = new StringBuilder();
+        
+        documentName = "verification-"+(authService.getAuth().getEmail()) +"-"+documentName.toLowerCase()+ext;
+        
+        Path fileNameAndPath = Paths.get(uploadDirectory, documentName);
+        fileName.append(docFile.getOriginalFilename());
+        try {
+        File dir = new File(uploadDirectory);
+        if (!dir.exists())
+        dir.mkdirs();
+        Files.write(fileNameAndPath, docFile.getBytes());
+        } catch (IOException e) {
+        throw new IllegalStateException(e);
+        }
+        return documentName;
+    } else {
+    throw new ValidationException("Document must be an image or pdf document");
+    }
+}
+
 }

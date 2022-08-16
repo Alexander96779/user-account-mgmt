@@ -12,6 +12,7 @@ import com.z.useraccountmgmt.exceptions.ResourceNotFoundException;
 import com.z.useraccountmgmt.model.MyUserDetails;
 import com.z.useraccountmgmt.model.Profile;
 import com.z.useraccountmgmt.model.User;
+import com.z.useraccountmgmt.model.Verification;
 import com.z.useraccountmgmt.model.dto.UserDto;
 import com.z.useraccountmgmt.model.mapper.Mapper;
 import com.z.useraccountmgmt.model.request.UserRequest;
@@ -19,6 +20,7 @@ import com.z.useraccountmgmt.model.response.AuthResponse;
 import com.z.useraccountmgmt.model.response.UserResponse;
 import com.z.useraccountmgmt.repository.ProfileRepository;
 import com.z.useraccountmgmt.repository.UserRepository;
+import com.z.useraccountmgmt.repository.VerificationRepository;
 import com.z.useraccountmgmt.service.AuthService;
 
 @Service
@@ -35,6 +37,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Autowired
     ProfileRepository profileRepository;
+
+    @Autowired
+    VerificationRepository verificationRepository;
     
     @Override
     public UserDto signUpUser(UserDto userDto) {
@@ -45,6 +50,9 @@ public class AuthServiceImpl implements AuthService {
         createdUser.setRoles("ROLE_USER");
         Profile profile = new Profile();
         Profile createdProfile = profileRepository.save(profile);
+        Verification verification = new Verification();
+        Verification createdVerification = verificationRepository.save(verification);
+        createdProfile.setVerification(createdVerification);
         createdUser.setProfile(createdProfile);
         userRepository.save(createdUser);
 
